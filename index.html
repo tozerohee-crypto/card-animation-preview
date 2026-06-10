@@ -440,9 +440,9 @@ const animations = [
   },
   {
     file: 'star-stamp-spiral.html',
-    name: 'Spiral In',
-    desc: '작은 점에서 빙글빙글 회전하며 커지고 안착',
-    tags: ['spin', 'bounce'],
+    name: 'Spiral In + Shine',
+    desc: '살짝 회전하며 쫀득하게 등장 + 유리 반사 빛줄기',
+    tags: ['spin', 'bounce', 'shine'],
     css: `/* Spiral In Animation */
 @keyframes spiralIn {
   0%   { opacity: 0; transform: scale(0.3) rotate(-20deg); }
@@ -454,10 +454,17 @@ const animations = [
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
+/* Glass Shine Sweep */
+@keyframes glassShine {
+  0%   { left: -120%; opacity: 0; }
+  10%  { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+
 .card {
   animation: spiralIn 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
-/* Card interval: 0.08s */`
+/* Card interval: 0.08s | Shine delay: card + 0.35s */`
   },
   {
     file: 'star-stamp-flip.html',
