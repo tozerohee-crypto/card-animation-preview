@@ -437,6 +437,81 @@ const animations = [
   animation: cardPop 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 /* Card interval: 0.08s | Shine delay: card + 0.35s */`
+  },
+  {
+    file: 'star-stamp-spiral.html',
+    name: 'Spiral In',
+    desc: '작은 점에서 빙글빙글 회전하며 커지고 안착',
+    tags: ['spin', 'bounce'],
+    css: `/* Spiral In Animation */
+@keyframes spiralIn {
+  0%   { opacity: 0; transform: scale(0) rotate(-540deg); }
+  60%  { opacity: 1; transform: scale(1.1) rotate(15deg); }
+  75%  { transform: scale(0.95) rotate(-5deg); }
+  90%  { transform: scale(1.03) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.card {
+  animation: spiralIn 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+/* Card interval: 0.08s */`
+  },
+  {
+    file: 'star-stamp-flip.html',
+    name: 'Flip Reveal + Shine',
+    desc: 'X축으로 카드 뒤집기 (앞면 공개) + 유리 반사 효과',
+    tags: ['flip-x', 'shine'],
+    css: `/* Flip Reveal Animation (rotateX) */
+@keyframes flipReveal {
+  0%   { opacity: 0; transform: rotateX(180deg) scale(0.7) translateY(30px); }
+  40%  { opacity: 1; transform: rotateX(-15deg) scale(1.08) translateY(-8px); }
+  60%  { transform: rotateX(8deg) scale(0.96) translateY(3px); }
+  80%  { transform: rotateX(-3deg) scale(1.02) translateY(-1px); }
+  100% { opacity: 1; transform: rotateX(0deg) scale(1) translateY(0); }
+}
+
+/* Glass Shine Sweep */
+@keyframes glassShine {
+  0%   { left: -120%; opacity: 0; }
+  10%  { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+
+.card {
+  animation: flipReveal 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+/* Card interval: 0.08s | Shine delay: card + 0.35s */`
+  },
+  {
+    file: 'star-stamp-elastic.html',
+    name: 'Elastic Slide',
+    desc: '좌우에서 탄성 있게 슬라이드 (홀수행 왼쪽, 짝수행 오른쪽)',
+    tags: ['slide', 'elastic'],
+    css: `/* Elastic Slide from Left */
+@keyframes elasticSlide {
+  0%   { opacity: 0; transform: translateX(-200px) scaleX(1.3) scaleY(0.8); }
+  30%  { opacity: 1; transform: translateX(18px) scaleX(0.9) scaleY(1.08); }
+  50%  { transform: translateX(-10px) scaleX(1.05) scaleY(0.96); }
+  68%  { transform: translateX(5px) scaleX(0.98) scaleY(1.02); }
+  82%  { transform: translateX(-2px) scaleX(1.01) scaleY(0.995); }
+  100% { opacity: 1; transform: translateX(0) scaleX(1) scaleY(1); }
+}
+
+/* Elastic Slide from Right (even rows) */
+@keyframes elasticSlideRight {
+  0%   { opacity: 0; transform: translateX(200px) scaleX(1.3) scaleY(0.8); }
+  30%  { opacity: 1; transform: translateX(-18px) scaleX(0.9) scaleY(1.08); }
+  50%  { transform: translateX(10px) scaleX(1.05) scaleY(0.96); }
+  68%  { transform: translateX(-5px) scaleX(0.98) scaleY(1.02); }
+  82%  { transform: translateX(2px) scaleX(1.01) scaleY(0.995); }
+  100% { opacity: 1; transform: translateX(0) scaleX(1) scaleY(1); }
+}
+
+.card {
+  animation: elasticSlide 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+/* Card interval: 0.06s | Row gap: 0.12s */`
   }
 ];
 
@@ -445,6 +520,10 @@ const tagStyles = {
   flip: 'tag-motion',
   bounce: 'tag-motion',
   smooth: 'tag-motion',
+  spin: 'tag-motion',
+  'flip-x': 'tag-motion',
+  slide: 'tag-motion',
+  elastic: 'tag-motion',
   puff: 'tag-effect',
   sparkle: 'tag-effect',
   shine: 'tag-effect',

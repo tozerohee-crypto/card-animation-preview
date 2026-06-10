@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Elastic Slide Animation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000;
+    overflow: hidden;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 24px;
+  }
+
+  @keyframes elasticSlide {
+    0% {
+      opacity: 0;
+      transform: translateX(-200px) scaleX(1.3) scaleY(0.8);
+    }
+    30% {
+      opacity: 1;
+      transform: translateX(18px) scaleX(0.9) scaleY(1.08);
+    }
+    50% {
+      transform: translateX(-10px) scaleX(1.05) scaleY(0.96);
+    }
+    68% {
+      transform: translateX(5px) scaleX(0.98) scaleY(1.02);
+    }
+    82% {
+      transform: translateX(-2px) scaleX(1.01) scaleY(0.995);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scaleX(1) scaleY(1);
+    }
+  }
+
+  /* 홀수 행은 왼쪽에서, 짝수 행은 오른쪽에서 */
+  @keyframes elasticSlideRight {
+    0% {
+      opacity: 0;
+      transform: translateX(200px) scaleX(1.3) scaleY(0.8);
+    }
+    30% {
+      opacity: 1;
+      transform: translateX(-18px) scaleX(0.9) scaleY(1.08);
+    }
+    50% {
+      transform: translateX(10px) scaleX(1.05) scaleY(0.96);
+    }
+    68% {
+      transform: translateX(-5px) scaleX(0.98) scaleY(1.02);
+    }
+    82% {
+      transform: translateX(2px) scaleX(1.01) scaleY(0.995);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scaleX(1) scaleY(1);
+    }
+  }
+
+  .card {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a1a1a;
+    opacity: 0;
+  }
+
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* 1행: 왼쪽에서 */
+  .card:nth-child(1)  { animation: elasticSlide 0.65s cubic-bezier(0.25,1,0.5,1) 0.0s forwards; }
+  .card:nth-child(2)  { animation: elasticSlide 0.65s cubic-bezier(0.25,1,0.5,1) 0.06s forwards; }
+  .card:nth-child(3)  { animation: elasticSlide 0.65s cubic-bezier(0.25,1,0.5,1) 0.12s forwards; }
+  .card:nth-child(4)  { animation: elasticSlide 0.65s cubic-bezier(0.25,1,0.5,1) 0.18s forwards; }
+  /* 2행: 오른쪽에서 */
+  .card:nth-child(5)  { animation: elasticSlideRight 0.65s cubic-bezier(0.25,1,0.5,1) 0.30s forwards; }
+  .card:nth-child(6)  { animation: elasticSlideRight 0.65s cubic-bezier(0.25,1,0.5,1) 0.36s forwards; }
+  .card:nth-child(7)  { animation: elasticSlideRight 0.65s cubic-bezier(0.25,1,0.5,1) 0.42s forwards; }
+  .card:nth-child(8)  { animation: elasticSlideRight 0.65s cubic-bezier(0.25,1,0.5,1) 0.48s forwards; }
+  /* 3행: 왼쪽에서 */
+  .card:nth-child(9)  { animation: elasticSlide 0.65s cubic-bezier(0.25,1,0.5,1) 0.60s forwards; }
+  .card:nth-child(10) { animation: elasticSlide 0.65s cubic-bezier(0.25,1,0.5,1) 0.66s forwards; }
+  .card:nth-child(11) { animation: elasticSlide 0.65s cubic-bezier(0.25,1,0.5,1) 0.72s forwards; }
+  .card:nth-child(12) { animation: elasticSlide 0.65s cubic-bezier(0.25,1,0.5,1) 0.78s forwards; }
+
+  .replay-btn {
+    margin-top: 40px;
+    padding: 10px 28px;
+    background: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .replay-btn:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+
+<div class="grid" id="grid">
+  <div class="card"><img src="asset_1-1.png" alt=""></div>
+  <div class="card"><img src="asset_1-2.png" alt=""></div>
+  <div class="card"><img src="asset_1-3.png" alt=""></div>
+  <div class="card"><img src="asset_1-4.png" alt=""></div>
+  <div class="card"><img src="asset_1-5.png" alt=""></div>
+  <div class="card"><img src="asset_1-6.png" alt=""></div>
+  <div class="card"><img src="asset_1-7.png" alt=""></div>
+  <div class="card"><img src="asset_1-8.png" alt=""></div>
+  <div class="card"><img src="asset_1-9.png" alt=""></div>
+  <div class="card"><img src="asset_1-10.png" alt=""></div>
+  <div class="card"><img src="asset_1-11.png" alt=""></div>
+  <div class="card"><img src="asset_1.png" alt=""></div>
+</div>
+
+<button class="replay-btn" onclick="replay()">Replay</button>
+
+<script>
+function replay() {
+  const grid = document.getElementById('grid');
+  const clone = grid.cloneNode(true);
+  clone.id = 'grid';
+  grid.parentNode.replaceChild(clone, grid);
+}
+</script>
+
+</body>
+</html>
