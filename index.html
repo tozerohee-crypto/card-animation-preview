@@ -445,10 +445,12 @@ const animations = [
     tags: ['spin', 'bounce'],
     css: `/* Spiral In Animation */
 @keyframes spiralIn {
-  0%   { opacity: 0; transform: scale(0) rotate(-540deg); }
-  60%  { opacity: 1; transform: scale(1.1) rotate(15deg); }
-  75%  { transform: scale(0.95) rotate(-5deg); }
-  90%  { transform: scale(1.03) rotate(2deg); }
+  0%   { opacity: 0; transform: scale(0) rotate(-60deg); }
+  25%  { opacity: 1; transform: scale(1.15) rotate(12deg) scaleX(0.9) scaleY(1.08); }
+  42%  { transform: scale(0.92) rotate(-8deg) scaleX(1.06) scaleY(0.94); }
+  58%  { transform: scale(1.06) rotate(5deg) scaleX(0.97) scaleY(1.03); }
+  72%  { transform: scale(0.97) rotate(-3deg) scaleX(1.02) scaleY(0.98); }
+  85%  { transform: scale(1.02) rotate(1.5deg) scaleX(0.99) scaleY(1.01); }
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
