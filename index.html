@@ -521,6 +521,34 @@ const animations = [
   animation: elasticSlide 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 /* Card interval: 0.06s | Row gap: 0.12s */`
+  },
+  {
+    file: 'star-stamp-wobble.html',
+    name: 'Pop Up + Wobble + Shine',
+    desc: '아래에서 톡 튀어오르며 좌우 흔들림 + 유리 반사 빛줄기',
+    tags: ['bounce', 'spin', 'shine'],
+    css: `/* Pop Up + Wobble Animation */
+@keyframes popWobble {
+  0%   { opacity: 0; transform: translateY(60px) scale(0.4) rotate(0deg); }
+  20%  { opacity: 1; transform: translateY(-10px) scale(1.1) rotate(-6deg); }
+  35%  { transform: translateY(4px) scale(0.95) rotate(4deg); }
+  50%  { transform: translateY(-3px) scale(1.04) rotate(-2.5deg); }
+  65%  { transform: translateY(1px) scale(0.98) rotate(1.5deg); }
+  80%  { transform: translateY(-1px) scale(1.01) rotate(-0.5deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+/* Glass Shine Sweep */
+@keyframes glassShine {
+  0%   { left: -120%; opacity: 0; }
+  10%  { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+
+.card {
+  animation: popWobble 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+/* Card interval: 0.08s | Shine delay: card + 0.35s */`
   }
 ];
 
