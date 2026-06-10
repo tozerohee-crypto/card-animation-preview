@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Puff Reveal Animation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000;
+    overflow: hidden;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 24px;
+  }
+
+  /* 카드 래퍼 */
+  .card-wrapper {
+    position: relative;
+    width: 72px;
+    height: 72px;
+  }
+
+  /* 카드 본체 — 위에서 쫀득하게 내려옴 */
+  .card {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a1a1a;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(-400px);
+  }
+
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Puff 둥근 연기 */
+  .puff {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.5) 50%, transparent 72%);
+    border-radius: 50%;
+    z-index: 3;
+    opacity: 0;
+    transform: scale(0);
+    pointer-events: none;
+  }
+
+  .puff:nth-child(2) { top: -10px; left: 8px; width: 24px; height: 24px; }
+  .puff:nth-child(3) { top: -8px; right: 2px; width: 20px; height: 20px; }
+  .puff:nth-child(4) { top: 25%; left: -14px; width: 26px; height: 26px; }
+  .puff:nth-child(5) { top: 20%; right: -14px; width: 22px; height: 22px; }
+  .puff:nth-child(6) { bottom: 5px; left: -10px; width: 22px; height: 22px; }
+  .puff:nth-child(7) { bottom: -4px; right: 6px; width: 18px; height: 18px; }
+  .puff:nth-child(8) { bottom: -8px; left: 20px; width: 20px; height: 20px; }
+
+  /* Sparkle 4각 별 */
+  .sparkle {
+    position: absolute;
+    z-index: 4;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .sparkle::before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    background: white;
+    clip-path: polygon(50% 0%, 60% 35%, 100% 50%, 60% 65%, 50% 100%, 40% 65%, 0% 50%, 40% 35%);
+  }
+  .sparkle.sm::before { width: 9px; height: 9px; }
+
+  .sparkle:nth-child(9)  { top: -22px; left: 45%; }
+  .sparkle:nth-child(10) { top: 10%; right: -22px; }
+  .sparkle:nth-child(11) { bottom: -18px; left: 30%; }
+  .sparkle:nth-child(12) { top: 55%; left: -20px; }
+  .sparkle:nth-child(13) { bottom: -24px; right: 10px; }
+
+  /* ====== 키프레임 ====== */
+
+  @keyframes cardDrop {
+    0% {
+      opacity: 0;
+      transform: translateY(-400px) scaleY(1.1) scaleX(0.95);
+    }
+    25% {
+      opacity: 1;
+    }
+    40% {
+      opacity: 1;
+      transform: translateY(0) scaleY(0.88) scaleX(1.08);
+    }
+    55% {
+      transform: translateY(-6px) scaleY(1.03) scaleX(0.98);
+    }
+    70% {
+      transform: translateY(0) scaleY(0.97) scaleX(1.02);
+    }
+    85% {
+      transform: translateY(-2px) scaleY(1.01) scaleX(0.995);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scaleY(1) scaleX(1);
+    }
+  }
+
+  @keyframes puffBurst {
+    0% {
+      opacity: 0;
+      transform: scale(0) translate(0, 0);
+    }
+    25% {
+      opacity: 1;
+      transform: scale(1.4);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.3) translate(var(--tx), var(--ty));
+    }
+  }
+
+  @keyframes sparkleFlash {
+    0% {
+      opacity: 0;
+      transform: scale(0) rotate(0deg);
+    }
+    35% {
+      opacity: 1;
+      transform: scale(1.3) rotate(15deg);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0) rotate(40deg);
+    }
+  }
+
+  /* ====== 타이밍 매크로: 간격 0.15s ====== */
+
+  .card-wrapper:nth-child(1)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 0.10s forwards; }
+  .card-wrapper:nth-child(2)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 0.25s forwards; }
+  .card-wrapper:nth-child(3)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 0.40s forwards; }
+  .card-wrapper:nth-child(4)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 0.55s forwards; }
+  .card-wrapper:nth-child(5)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 0.70s forwards; }
+  .card-wrapper:nth-child(6)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 0.85s forwards; }
+  .card-wrapper:nth-child(7)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 1.00s forwards; }
+  .card-wrapper:nth-child(8)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 1.15s forwards; }
+  .card-wrapper:nth-child(9)  .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 1.30s forwards; }
+  .card-wrapper:nth-child(10) .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 1.45s forwards; }
+  .card-wrapper:nth-child(11) .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 1.60s forwards; }
+  .card-wrapper:nth-child(12) .card { animation: cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) 1.75s forwards; }
+
+  /* Puff + Sparkle 타이밍 — JS로 처리 */
+
+  .replay-btn {
+    margin-top: 40px;
+    padding: 10px 28px;
+    background: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .replay-btn:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+
+<div class="grid" id="grid">
+</div>
+
+<button class="replay-btn" onclick="replay()">Replay</button>
+
+<script>
+const images = [
+  'asset_1-1.png','asset_1-2.png','asset_1-3.png','asset_1-4.png',
+  'asset_1-5.png','asset_1-6.png','asset_1-7.png','asset_1-8.png',
+  'asset_1-9.png','asset_1-10.png','asset_1-11.png','asset_1.png'
+];
+
+const puffDirs = [
+  {tx:'-15px', ty:'-20px'}, {tx:'18px', ty:'-18px'},
+  {tx:'-25px', ty:'0'}, {tx:'25px', ty:'3px'},
+  {tx:'-20px', ty:'18px'}, {tx:'14px', ty:'20px'},
+  {tx:'0', ty:'25px'}
+];
+
+function buildGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  images.forEach((src, i) => {
+    const baseDelay = 0.10 + i * 0.15;
+    const impactDelay = baseDelay + 0.20;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-wrapper';
+
+    // 카드
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animation = `cardDrop 0.5s cubic-bezier(0.22,1,0.36,1) ${baseDelay}s forwards`;
+    const img = document.createElement('img');
+    img.src = src;
+    card.appendChild(img);
+    wrapper.appendChild(card);
+
+    // Puffs
+    for (let p = 0; p < 7; p++) {
+      const puff = document.createElement('div');
+      puff.className = 'puff';
+      const d = puffDirs[p];
+      puff.style.setProperty('--tx', d.tx);
+      puff.style.setProperty('--ty', d.ty);
+      const pDelay = impactDelay + (p * 0.015);
+      puff.style.animation = `puffBurst 0.55s ease-out ${pDelay}s forwards`;
+      wrapper.appendChild(puff);
+    }
+
+    // Sparkles
+    const sparklePositions = [
+      {top:'-22px', left:'45%', sm: false},
+      {top:'10%', right:'-22px', sm: true},
+      {bottom:'-18px', left:'30%', sm: false},
+      {top:'55%', left:'-20px', sm: true},
+      {bottom:'-24px', right:'10px', sm: false}
+    ];
+
+    sparklePositions.forEach((pos, s) => {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle' + (pos.sm ? ' sm' : '');
+      if (pos.top) sparkle.style.top = pos.top;
+      if (pos.bottom) sparkle.style.bottom = pos.bottom;
+      if (pos.left) sparkle.style.left = pos.left;
+      if (pos.right) sparkle.style.right = pos.right;
+      const sDelay = impactDelay + 0.02 + (s * 0.05);
+      sparkle.style.animation = `sparkleFlash 0.5s ease-out ${sDelay}s forwards`;
+      wrapper.appendChild(sparkle);
+    });
+
+    grid.appendChild(wrapper);
+  });
+}
+
+function replay() {
+  buildGrid();
+}
+
+buildGrid();
+</script>
+
+</body>
+</html>
